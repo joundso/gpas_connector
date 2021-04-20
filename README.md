@@ -1,10 +1,7 @@
 # gPASconnectoR
 
 <!-- badges: start -->
-[![R CMD Check via {tic}](https://github.com/joundso/gpas_connector/workflows/R%20CMD%20Check%20via%20{tic}/badge.svg?branch=master)](https://github.com/joundso/gpas_connector)
-[![linting](https://github.com/joundso/gpas_connector/workflows/lint/badge.svg?branch=master)](https://github.com/joundso/gpas_connector)
-[![test-coverage](https://github.com/joundso/gpas_connector/workflows/test-coverage/badge.svg?branch=master)](https://github.com/joundso/gpas_connector)
-[![codecov](https://codecov.io/gh/joundso/gPAS-connector/branch/master/graph/badge.svg)](https://codecov.io/gh/joundso/gPAS-connector)
+[![codecov](https://codecov.io/gh/joundso/gpas_connector/branch/master/graph/badge.svg)](https://codecov.io/gh/joundso/gpas_connector)
 [![pipeline status](https://git.uk-erlangen.de/mik-diz/mik-diz-tea/r-packages/gpas_connector/badges/master/pipeline.svg)](https://git.uk-erlangen.de/mik-diz/mik-diz-tea/r-packages/gpas_connector/commits/master)
 [![coverage report](https://git.uk-erlangen.de/mik-diz/mik-diz-tea/r-packages/gpas_connector/badges/master/coverage.svg)](https://git.uk-erlangen.de/mik-diz/mik-diz-tea/r-packages/gpas_connector/commits/master)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/gPASconnectoR)](https://cran.r-project.org/package=gPASconnectoR)
