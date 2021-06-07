@@ -26,6 +26,7 @@
 #'   pseudonymized.
 #' @param allow_create (boolean, default = TRUE). Do you want to create
 #'   new pseudonyms if there is no pseudonym for some of your values yet?
+#'   The value of this parameter has no effect, if `depseudonymize == TRUE`.
 #' @param gpas_fieldvalue (String) The actual value(s) to pseudonymized.
 #' @param from_env (Optional, Boolean, Default = `FALSE`) If true, the
 #'   connection parameters `GPAS_BASE_URL`, `GPAS_PSEUDONYM_DOMAIN`
@@ -41,6 +42,32 @@ gpas <-
            allow_create = TRUE,
            gpas_fieldvalue,
            from_env = FALSE) {
+    if (from_env) {
+      GPAS_BASE_URL <- Sys.getenv("GPAS_BASE_URL")
+      GPAS_PSEUDONYM_DOMAIN <- Sys.getenv("GPAS_PSEUDONYM_DOMAIN")
+    }
+
+    if (rapportools::is.empty(GPAS_BASE_URL) ||
+        rapportools::is.empty(GPAS_PSEUDONYM_DOMAIN)) {
+      DIZutils::feedback(
+        print_this = paste0(
+          "One of the connection parameters for gPAS is empty.",
+          " Please fix."
+        ),
+        type = "Error",
+        findme = "fbda9e74e3"
+      )
+      stop("See error above")
+    }
+
+    input <- ifelse(test = depseudonymize,
+                    yes = "pseudonym",
+                    no = "original")
+    output <- ifelse(test = depseudonymize,
+                     yes = "original",
+                     no = "pseudonym")
+
+
     ## Make sure the base URL ends with a tailing slash:
     GPAS_BASE_URL <-
       DIZutils::clean_path_name(pathname = GPAS_BASE_URL,
@@ -53,12 +80,7 @@ gpas <-
                  ), lapply(
                    X = gpas_fieldvalue,
                    FUN = function(x) {
-                     list(
-                       "name" = ifelse(test = depseudonymize,
-                                       yes = "pseudonym",
-                                       no = "original"),
-                       "valueString" = x
-                     )
+                     list("name" = input, "valueString" = x)
                    }
                  )))
     body <- jsonlite::toJSON(data
@@ -89,9 +111,9 @@ gpas <-
 
 
     return(sapply(res$parameter$part, function(x) {
-      return(x[x$name == ifelse(test = depseudonymize,
-                                yes = "original",
-                                no = "pseudonym"),
-               "valueString"])
+      res_apply <- list()
+      res_apply[x[x$name == input, "valueString"]] <-
+        x[x$name == output, "valueString"]
+      return(res_apply)
     }))
   }

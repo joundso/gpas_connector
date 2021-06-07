@@ -26,7 +26,8 @@ Do you want to depseudonymize the values? If false, the values will be
 pseudonymized.}
 
 \item{allow_create}{(boolean, default = TRUE). Do you want to create
-new pseudonyms if there is no pseudonym for some of your values yet?}
+new pseudonyms if there is no pseudonym for some of your values yet?
+The value of this parameter has no effect, if `depseudonymize == TRUE`.}
 
 \item{gpas_fieldvalue}{(String) The actual value(s) to pseudonymized.}
 

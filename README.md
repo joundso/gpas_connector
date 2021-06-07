@@ -10,8 +10,6 @@
 
 The R package `gPASconnectoR` provides utility functions used to access a running gPAS-Instance.
 
-:construction::warning: This repo is not ready to use at the moment! :warning::construction:
-
 ## Installation
 
 <!---
@@ -39,7 +37,6 @@ devtools::install_github("joundso/gpas_connector", ref = "development")
 res <- gPASconnectoR::pseudonymize(
   GPAS_BASE_URL = "https://your-organization.org",
   GPAS_API_KEY = "123456789abcdef",
-  GPAS_FIELDNAME = "ishid",
   gpas_fieldvalue = c(123, 456, "abc")
 )
 
@@ -56,15 +53,14 @@ Simply fill a `.env` file:
 ```sh
 ## Save this e.g. as '.env'
 GPAS_BASE_URL=https://your-organization.org
-GPAS_API_KEY=123456789abcdef
-GPAS_FIELDNAME=ishid
+GPAS_PSEUDONYM_DOMAIN=https://fhir.your.organization.org/identifiers/person-id
 ```
 
-then read in the file and assign all variables to the environment:
+Then read in the file and assign all variables to the environment:
 
 ```R
 ## Read in the '.env' file:
-DIZutils::set_env_vars(env_file = "./.env")
+DIZutils::set_env_vars(env_file = "./demo.env")
 
 ## And use the smaller function call:
 res <- gPASconnectoR::pseudonymize(
@@ -74,8 +70,14 @@ res <- gPASconnectoR::pseudonymize(
 
 ## Result (e.g.):
 res
-#       123        456        abc
-# "000C30WP" "T4ECWT4Q" "Y2FAYH5D"
+#> $`123`
+#> [1] "psn-pid.217172DEACFA2C751515641C"
+#> 
+#> $`456`
+#> [1] "psn-pid.41A7D91C53DC2A457FBAB041"
+#> 
+#> $abc
+#> [1] "psn-pid.1FFDF5A91EA051608AC4E03A"
 ```
 
 #### Accessing the result
@@ -110,6 +112,7 @@ This is exactly the same like pseudonymizing, but use `gPASconnectoR::depseudony
 
 ## More Infos
 
+* Some debugging and other examples can be found in the file [`data-raw/debugging.R`](./data-raw/debugging.R).
 * About the gPAS in its [Repo](https://bitbucket.org/medicalinformatics/gPAS/src/master) or its [Wiki](https://bitbucket.org/medicalinformatics/gPAS/wiki/Home)
 * About MIRACUM: <https://www.miracum.org/>
 * About the Medical Informatics Initiative: <https://www.medizininformatik-initiative.de/index.php/de>
