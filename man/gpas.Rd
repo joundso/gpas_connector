@@ -10,7 +10,8 @@ gpas(
   depseudonymize = FALSE,
   allow_create = TRUE,
   gpas_fieldvalue,
-  from_env = FALSE
+  from_env = FALSE,
+  handle_na = TRUE
 )
 }
 \arguments{

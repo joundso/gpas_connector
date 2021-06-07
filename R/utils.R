@@ -47,12 +47,12 @@ gpas <-
            depseudonymize = FALSE,
            allow_create = TRUE,
            gpas_fieldvalue,
-           from_env = FALSE
-           # ,handle_na = TRUE
-           ) {
+           from_env = FALSE,
+           handle_na = TRUE) {
     if (from_env) {
       GPAS_BASE_URL <- Sys.getenv("GPAS_BASE_URL")
-      GPAS_PSEUDONYM_DOMAIN <- Sys.getenv("GPAS_PSEUDONYM_DOMAIN")
+      GPAS_PSEUDONYM_DOMAIN <-
+        Sys.getenv("GPAS_PSEUDONYM_DOMAIN")
     }
 
     if (rapportools::is.empty(GPAS_BASE_URL) ||
@@ -117,10 +117,8 @@ gpas <-
     res <-
       jsonlite::fromJSON(httr::content(x = res_json, as = "text"))
 
-
-    return(sapply(res$parameter$part, function(x) {
+    res <- sapply(res$parameter$part, function(x) {
       res_apply <- list()
-      if(x[x$name == output, "valueString"])
       if (any(grepl(
         pattern = "error",
         x = x$name,
@@ -158,5 +156,7 @@ gpas <-
       }
 
       return(res_apply)
-    }))
+    })
+
+    return(res)
   }

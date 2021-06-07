@@ -1,6 +1,6 @@
 Package: gPASconnectoR
 Title: Utilities for working with the 'gPAS'
-Version: 0.0.1.9006
+Version: 0.0.1.9007
 Date: 2021-06-07
 Authors@R: 
     c(person(given = "Jonathan M.",
