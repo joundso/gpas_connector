@@ -1,0 +1,97 @@
+# gPASconnectoR
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+#' @title Helper function to perform the (de)pseudonymization
+#' @description Helper function to perform the (de)pseudonymization
+#' @param GPAS_BASE_URL (Optional, String)
+#'   The URL to your gPAS API.
+#'   E.g. 'https://gpas.hospital.org'.
+#' @param GPAS_PSEUDONYM_DOMAIN (Optional, String) The name of
+#'   the pseudonym domain configured in gPAS.
+#' @param depseudonymize (boolean, default = FALSE).
+#'   Do you want to depseudonymize the values? If false, the values will be
+#'   pseudonymized.
+#' @param allow_create (boolean, default = TRUE). Do you want to create
+#'   new pseudonyms if there is no pseudonym for some of your values yet?
+#' @param gpas_fieldvalue (String) The actual value(s) to pseudonymized.
+#' @param from_env (Optional, Boolean, Default = `FALSE`) If true, the
+#'   connection parameters `GPAS_BASE_URL`, `GPAS_PSEUDONYM_DOMAIN`
+#'   are read from the environment
+#'   and can therefore be left empty when calling this function.
+#'
+#' @return (vector) All pseudonyms for the input values.
+#'
+gpas <-
+  function(GPAS_BASE_URL = NULL,
+           GPAS_PSEUDONYM_DOMAIN = NULL,
+           depseudonymize = FALSE,
+           allow_create = TRUE,
+           gpas_fieldvalue,
+           from_env = FALSE) {
+    ## Make sure the base URL ends with a tailing slash:
+    GPAS_BASE_URL <-
+      DIZutils::clean_path_name(pathname = GPAS_BASE_URL,
+                                remove.slash = FALSE)
+
+    data <- list("resourceType" = "Parameters",
+                 "parameter" =       c(list(
+                   list("name" = "target",
+                        "valueString" = GPAS_PSEUDONYM_DOMAIN)
+                 ), lapply(
+                   X = gpas_fieldvalue,
+                   FUN = function(x) {
+                     list(
+                       "name" = ifelse(test = depseudonymize,
+                                       yes = "pseudonym",
+                                       no = "original"),
+                       "valueString" = x
+                     )
+                   }
+                 )))
+    body <- jsonlite::toJSON(data
+                             # , pretty = T
+                             , auto_unbox = T)
+
+    ## Default:
+    GPAS_ACTION = "$pseudonymize-allow-create"
+    if (depseudonymize) {
+      GPAS_ACTION = "$de-pseudonymize"
+    } else {
+      if (allow_create) {
+        GPAS_ACTION = "$pseudonymize-allow-create"
+      } else {
+        GPAS_ACTION = "$pseudonymize"
+      }
+    }
+
+    res_json <-
+      httr::POST(
+        url = paste0(GPAS_BASE_URL, GPAS_ACTION),
+        body = body,
+        encode = "json",
+        httr::add_headers("Content-Type" = "application/json")
+      )
+    res <-
+      jsonlite::fromJSON(httr::content(x = res_json, as = "text"))
+
+
+    return(sapply(res$parameter$part, function(x) {
+      return(x[x$name == ifelse(test = depseudonymize,
+                                yes = "original",
+                                no = "pseudonym"),
+               "valueString"])
+    }))
+  }

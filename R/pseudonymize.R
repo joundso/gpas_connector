@@ -16,27 +16,26 @@
 
 #' @title Get a pseudonym for a value
 #' @description Get a pseudonym for a value
-#' @param GPAS_BASE_URL (Optional, String)
-#'   The URL to your gPAS API.
-#'   E.g. 'https://ml.hospital.de'.
-#' @param GPAS_API_KEY (Optional, String)
-#'   The API key which is allowed to access the gPAS.
-#' @param GPAS_FIELDNAME (Optional, String) The name of
-#'   the field to use for the gPAS. Specified in the ML-config.
-#' @param gpas_fieldvalue (String) The actual value to pseudonymized.
-#' @param from_env (Optional, Boolean, Default = `FALSE`) If true, the
-#'   connection parameters `GPAS_BASE_URL`, `GPAS_API_KEY` and
-#'   `GPAS_FIELDNAME` are read from the environment
-#'   and can therefore be left empty when calling this function.
+#' @inheritParams gpas
+#' @param gpas_fieldvalue (String) The actual value(s) to pseudonymized.
 #'
 #' @return (vector) All pseudonyms for the input values.
 #' @export
 #'
 pseudonymize <-
   function(GPAS_BASE_URL = NULL,
-           GPAS_API_KEY = NULL,
-           GPAS_FIELDNAME = NULL,
+           GPAS_PSEUDONYM_DOMAIN = NULL,
+           allow_create = TRUE,
            gpas_fieldvalue,
            from_env = FALSE) {
-
+    return(
+      gpas(
+        GPAS_BASE_URL = GPAS_BASE_URL,
+        GPAS_PSEUDONYM_DOMAIN = GPAS_PSEUDONYM_DOMAIN,
+        depseudonymize = FALSE,
+        allow_create = allow_create,
+        gpas_fieldvalue = gpas_fieldvalue,
+        from_env = from_env
+      )
+    )
   }

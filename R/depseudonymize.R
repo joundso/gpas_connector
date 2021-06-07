@@ -16,7 +16,7 @@
 
 #' @title Convert a pseudonym back to its input value.
 #' @description Convert a pseudonym back to its input value.
-#' @inheritParams pseudonymize
+#' @inheritParams gpas
 #' @param gpas_fieldvalue (String) The actual value to de-pseudonymized.
 #'
 #' @return (vector) All pseudonyms for the input values.
@@ -24,8 +24,16 @@
 #'
 depseudonymize <-
   function(GPAS_BASE_URL = NULL,
-           GPAS_API_KEY = NULL,
-           GPAS_FIELDNAME = NULL,
+           GPAS_PSEUDONYM_DOMAIN = NULL,
            gpas_fieldvalue,
            from_env = FALSE) {
+    return(
+      gpas(
+        GPAS_BASE_URL = GPAS_BASE_URL,
+        GPAS_PSEUDONYM_DOMAIN = GPAS_PSEUDONYM_DOMAIN,
+        depseudonymize = TRUE,
+        gpas_fieldvalue = gpas_fieldvalue,
+        from_env = from_env
+      )
+    )
   }
