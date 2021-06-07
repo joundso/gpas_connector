@@ -33,6 +33,12 @@
 #'   are read from the environment
 #'   and can therefore be left empty when calling this function.
 #'
+# @param handle_na (Boolean, optional, default = `TRUE`).
+#   If TRUE, no errors will be thrown if there is a NA in the input (!) data.
+#   Instead the output will still be NA.
+#   IF FALSE, an error will occur if there is any NA in the input data and
+#   this cannot be (de)pseudonymized by gPAS.
+#'
 #' @return (vector) All pseudonyms for the input values.
 #'
 gpas <-
@@ -41,7 +47,9 @@ gpas <-
            depseudonymize = FALSE,
            allow_create = TRUE,
            gpas_fieldvalue,
-           from_env = FALSE) {
+           from_env = FALSE
+           # ,handle_na = TRUE
+           ) {
     if (from_env) {
       GPAS_BASE_URL <- Sys.getenv("GPAS_BASE_URL")
       GPAS_PSEUDONYM_DOMAIN <- Sys.getenv("GPAS_PSEUDONYM_DOMAIN")
@@ -74,7 +82,7 @@ gpas <-
                                 remove.slash = FALSE)
 
     data <- list("resourceType" = "Parameters",
-                 "parameter" =       c(list(
+                 "parameter" = c(list(
                    list("name" = "target",
                         "valueString" = GPAS_PSEUDONYM_DOMAIN)
                  ), lapply(
@@ -112,6 +120,7 @@ gpas <-
 
     return(sapply(res$parameter$part, function(x) {
       res_apply <- list()
+      if(x[x$name == output, "valueString"])
       if (any(grepl(
         pattern = "error",
         x = x$name,
