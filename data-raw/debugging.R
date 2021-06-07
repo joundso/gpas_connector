@@ -10,6 +10,7 @@ Sys.setenv("GPAS_BASE_URL" = "https://your-organization.org")
 Sys.setenv("GPAS_PSEUDONYM_DOMAIN" = "https://fhir.your.organization.org/identifiers/person-id")
 
 ## Load the variables from a file:
+DIZutils::set_env_vars(env_file = "./data-raw/demo.env")
 DIZutils::set_env_vars(env_file = "../gpas_connector.env")
 
 ## Convert the real ids to pseudonyms:
