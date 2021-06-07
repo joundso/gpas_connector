@@ -31,7 +31,7 @@ The value of this parameter has no effect, if `depseudonymize == TRUE`.}
 
 \item{gpas_fieldvalue}{(String) The actual value(s) to pseudonymized.}
 
-\item{from_env}{(Optional, Boolean, Default = `FALSE`) If true, the
+\item{from_env}{(Optional, Boolean, Default = `TRUE`) If true, the
 connection parameters `GPAS_BASE_URL`, `GPAS_PSEUDONYM_DOMAIN`
 are read from the environment
 and can therefore be left empty when calling this function.}

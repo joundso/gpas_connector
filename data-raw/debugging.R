@@ -14,14 +14,13 @@ DIZutils::set_env_vars(env_file = "./data-raw/demo.env")
 DIZutils::set_env_vars(env_file = "../gpas_connector.env")
 
 ## Convert the real ids to pseudonyms:
-res <- gPASconnectoR::pseudonymize(
-  gpas_fieldvalue = c(123, 456, "abc"),
-  from_env = TRUE
-)
+res <-
+  gPASconnectoR::pseudonymize(
+    gpas_fieldvalue = c(123, 456, "abcd"),
+    from_env = TRUE,
+    allow_create = FALSE
+  )
 
 ## Convert the pseudonyms back to real ids:
-gPASconnectoR::depseudonymize(
-  gpas_fieldvalue = as.character(res),
-  from_env = TRUE
-)
+gPASconnectoR::depseudonymize(as.character(res))
 

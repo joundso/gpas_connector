@@ -5,13 +5,15 @@
 \title{Convert a pseudonym back to its input value.}
 \usage{
 depseudonymize(
+  gpas_fieldvalue,
   GPAS_BASE_URL = NULL,
   GPAS_PSEUDONYM_DOMAIN = NULL,
-  gpas_fieldvalue,
-  from_env = FALSE
+  from_env = TRUE
 )
 }
 \arguments{
+\item{gpas_fieldvalue}{(String) The actual value to de-pseudonymized.}
+
 \item{GPAS_BASE_URL}{(Optional, String)
 The URL to your gPAS API.
 E.g. 'https://gpas.hospital.org'.}
@@ -19,9 +21,7 @@ E.g. 'https://gpas.hospital.org'.}
 \item{GPAS_PSEUDONYM_DOMAIN}{(Optional, String) The name of
 the pseudonym domain configured in gPAS.}
 
-\item{gpas_fieldvalue}{(String) The actual value to de-pseudonymized.}
-
-\item{from_env}{(Optional, Boolean, Default = `FALSE`) If true, the
+\item{from_env}{(Optional, Boolean, Default = `TRUE`) If true, the
 connection parameters `GPAS_BASE_URL`, `GPAS_PSEUDONYM_DOMAIN`
 are read from the environment
 and can therefore be left empty when calling this function.}

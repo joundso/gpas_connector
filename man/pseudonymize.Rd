@@ -5,14 +5,16 @@
 \title{Get a pseudonym for a value}
 \usage{
 pseudonymize(
+  gpas_fieldvalue,
   GPAS_BASE_URL = NULL,
   GPAS_PSEUDONYM_DOMAIN = NULL,
   allow_create = TRUE,
-  gpas_fieldvalue,
-  from_env = FALSE
+  from_env = TRUE
 )
 }
 \arguments{
+\item{gpas_fieldvalue}{(String) The actual value(s) to pseudonymized.}
+
 \item{GPAS_BASE_URL}{(Optional, String)
 The URL to your gPAS API.
 E.g. 'https://gpas.hospital.org'.}
@@ -24,9 +26,7 @@ the pseudonym domain configured in gPAS.}
 new pseudonyms if there is no pseudonym for some of your values yet?
 The value of this parameter has no effect, if `depseudonymize == TRUE`.}
 
-\item{gpas_fieldvalue}{(String) The actual value(s) to pseudonymized.}
-
-\item{from_env}{(Optional, Boolean, Default = `FALSE`) If true, the
+\item{from_env}{(Optional, Boolean, Default = `TRUE`) If true, the
 connection parameters `GPAS_BASE_URL`, `GPAS_PSEUDONYM_DOMAIN`
 are read from the environment
 and can therefore be left empty when calling this function.}

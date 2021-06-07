@@ -36,14 +36,20 @@ devtools::install_github("joundso/gpas_connector", ref = "development")
 ```R
 res <- gPASconnectoR::pseudonymize(
   GPAS_BASE_URL = "https://your-organization.org",
-  GPAS_API_KEY = "123456789abcdef",
+  GPAS_PSEUDONYM_DOMAIN = "https://fhir.your.organization.org/identifiers/person-id",
   gpas_fieldvalue = c(123, 456, "abc")
 )
 
 ## Result (e.g.):
 res
-#       123        456        abc
-# "000C30WP" "T4ECWT4Q" "Y2FAYH5D"
+#> $`123`
+#> [1] "psn-pid.217172DEACFA2C751515641C"
+#> 
+#> $`456`
+#> [1] "psn-pid.41A7D91C53DC2A457FBAB041"
+#> 
+#> $abc
+#> [1] "psn-pid.1FFDF5A91EA051608AC4E03A"
 ```
 
 #### With setting the environment variables
@@ -51,7 +57,7 @@ res
 Simply fill a `.env` file:
 
 ```sh
-## Save this e.g. as '.env'
+## Save this e.g. as `demo.env`:
 GPAS_BASE_URL=https://your-organization.org
 GPAS_PSEUDONYM_DOMAIN=https://fhir.your.organization.org/identifiers/person-id
 ```
@@ -63,10 +69,7 @@ Then read in the file and assign all variables to the environment:
 DIZutils::set_env_vars(env_file = "./demo.env")
 
 ## And use the smaller function call:
-res <- gPASconnectoR::pseudonymize(
-  gpas_fieldvalue = c(123, 456, "abc"),
-  from_env = TRUE
-)
+res <- gPASconnectoR::pseudonymize(c(123, 456, "abc"))
 
 ## Result (e.g.):
 res

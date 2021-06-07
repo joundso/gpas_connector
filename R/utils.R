@@ -28,7 +28,7 @@
 #'   new pseudonyms if there is no pseudonym for some of your values yet?
 #'   The value of this parameter has no effect, if `depseudonymize == TRUE`.
 #' @param gpas_fieldvalue (String) The actual value(s) to pseudonymized.
-#' @param from_env (Optional, Boolean, Default = `FALSE`) If true, the
+#' @param from_env (Optional, Boolean, Default = `TRUE`) If true, the
 #'   connection parameters `GPAS_BASE_URL`, `GPAS_PSEUDONYM_DOMAIN`
 #'   are read from the environment
 #'   and can therefore be left empty when calling this function.
@@ -112,8 +112,42 @@ gpas <-
 
     return(sapply(res$parameter$part, function(x) {
       res_apply <- list()
-      res_apply[x[x$name == input, "valueString"]] <-
-        x[x$name == output, "valueString"]
+      if (any(grepl(
+        pattern = "error",
+        x = x$name,
+        ignore.case = TRUE
+      ))) {
+        if (allow_create) {
+          DIZutils::feedback(
+            print_this = paste0(
+              "Value '",
+              x[x$name == input, "valueString"],
+              "' couldn't be ",
+              ifelse(depseudonymize, "de", ""),
+              "pseudonymized",
+              ifelse(
+                test = depseudonymize,
+                yes = ".",
+                no = " although creating new pseudonyms was enabled."
+              ),
+              " This is the error message: '",
+              x[grepl(pattern = "error",
+                      x = x$name,
+                      ignore.case = TRUE), "valueCoding"][["display"]]
+              ,
+              "'."
+            ),
+            type = "Error",
+            findme = "4729883bfe"
+          )
+          stop("See error above")
+        }
+        res_apply[x[x$name == input, "valueString"]] <- NA
+      } else {
+        res_apply[x[x$name == input, "valueString"]] <-
+          x[x$name == output, "valueString"]
+      }
+
       return(res_apply)
     }))
   }

@@ -23,10 +23,10 @@
 #' @export
 #'
 depseudonymize <-
-  function(GPAS_BASE_URL = NULL,
+  function(gpas_fieldvalue,
+           GPAS_BASE_URL = NULL,
            GPAS_PSEUDONYM_DOMAIN = NULL,
-           gpas_fieldvalue,
-           from_env = FALSE) {
+           from_env = TRUE) {
     return(
       gpas(
         GPAS_BASE_URL = GPAS_BASE_URL,

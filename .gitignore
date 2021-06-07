@@ -8,6 +8,7 @@
 !/.gitignore
 !/.Rbuildignore
 !/.gitlab-ci.yml
+!/renovate.json
 !/data-raw/
 !/DESCRIPTION
 !/inst/
